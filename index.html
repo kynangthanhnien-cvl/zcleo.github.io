@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa hàng của tôi - ZCleo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">🛒 ZCleo Store</h1>
+            <span id="cart-count" class="bg-red-500 text-xs px-2 py-1 rounded-full font-semibold">Giỏ hàng: 0</span>
+        </div>
+    </header>
+    <main class="max-w-6xl mx-auto p-4 my-6">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Sản phẩm nổi bật</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between">
+                <div>
+                    <img src="https://via.placeholder.com/300x200" alt="Sản phẩm" class="rounded mb-4 w-full object-cover">
+                    <h3 class="font-bold text-lg text-gray-800">Bình nước khắc tên độc quyền</h3>
+                    <p class="text-red-600 font-bold mt-2">120.000 đ</p>
+                </div>
+                <button onclick="addToCart('Bình nước khắc tên', 120000)" class="mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+                    Thêm vào giỏ hàng
+                </button>
+            </div>
+        </div>
+    </main>
+    <script>
+        let cartTotal = 0;
+        function addToCart(productName, price) {
+            cartTotal += 1;
+            document.getElementById('cart-count').innerText = `Giỏ hàng: ${cartTotal}`;
+            alert(`Đã thêm "${productName}" vào giỏ hàng thành công!`);
+        }
+    </script>
+</body>
+</html>
