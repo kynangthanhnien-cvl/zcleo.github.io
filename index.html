@@ -3,38 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cửa hàng của tôi - ZCleo</title>
+    <title>ZCleo Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 font-sans pb-10">
+
+    <!-- Header -->
     <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold">🛒 ZCleo Store</h1>
-            <span id="cart-count" class="bg-red-500 text-xs px-2 py-1 rounded-full font-semibold">Giỏ hàng: 0</span>
+            <span id="cart-count" class="bg-red-500 text-xs px-2 py-1 rounded-full font-semibold">Đã chọn: 0 sản phẩm</span>
         </div>
     </header>
+
+    <!-- Danh sách sản phẩm -->
     <main class="max-w-6xl mx-auto p-4 my-6">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Sản phẩm nổi bật</h2>
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between">
+            
+            <!-- SẢN PHẨM 1 -->
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between border">
                 <div>
-                    <img src="https://via.placeholder.com/300x200" alt="Sản phẩm" class="rounded mb-4 w-full object-cover">
+                    <!-- Thay link ảnh sản phẩm ở thuộc tính src bên dưới -->
+                    <img src="https://via.placeholder.com/300x200" alt="Bình nước khắc tên" class="rounded mb-4 w-full h-48 object-cover">
+                    <!-- Thay tên sản phẩm -->
                     <h3 class="font-bold text-lg text-gray-800">Bình nước khắc tên độc quyền</h3>
+                    <!-- Thay giá sản phẩm -->
                     <p class="text-red-600 font-bold mt-2">120.000 đ</p>
                 </div>
-                <button onclick="addToCart('Bình nước khắc tên', 120000)" class="mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-                    Thêm vào giỏ hàng
+                <button onclick="selectProduct('Bình nước khắc tên độc quyền', '120.000 đ')" class="mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+                    Đặt mua sản phẩm này
                 </button>
             </div>
+
+            <!-- SẢN PHẨM 2 (Bạn có thể copy khối này để tạo thêm nhiều sản phẩm) -->
+            <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-between border">
+                <div>
+                    <img src="https://via.placeholder.com/300x200" alt="Sản phẩm 2" class="rounded mb-4 w-full h-48 object-cover">
+                    <h3 class="font-bold text-lg text-gray-800">Áo thun CLB Kĩ Năng</h3>
+                    <p class="text-red-600 font-bold mt-2">150.000 đ</p>
+                </div>
+                <button onclick="selectProduct('Áo thun CLB Kĩ Năng', '150.000 đ')" class="mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+                    Đặt mua sản phẩm này
+                </button>
+            </div>
+
         </div>
     </main>
+
+    <!-- Form Đặt Hàng -->
+    <section id="order-section" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow border m-4 hidden">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Thông tin đặt hàng</h3>
+        <form onsubmit="sendOrder(event)" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Sản phẩm đã chọn:</label>
+                <input type="text" id="selected-product" readonly class="w-full mt-1 p-2 bg-gray-100 border rounded font-semibold text-blue-600">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Họ và tên người nhận (*):</label>
+                <input type="text" id="customer-name" required placeholder="Nhập họ tên của bạn" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Số điện thoại (*):</label>
+                <input type="tel" id="customer-phone" required placeholder="Nhập số điện thoại" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Ghi chú (Tên khắc trên bình / Size áo...):</label>
+                <textarea id="customer-note" rows="2" placeholder="Ví dụ: Khắc tên Nguyễn Văn A" class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-700 transition">
+                Gửi đơn hàng qua Zalo
+            </button>
+        </form>
+    </section>
+
     <script>
-        let cartTotal = 0;
-        function addToCart(productName, price) {
-            cartTotal += 1;
-            document.getElementById('cart-count').innerText = `Giỏ hàng: ${cartTotal}`;
-            alert(`Đã thêm "${productName}" vào giỏ hàng thành công!`);
+        let selectedProductInfo = "";
+
+        function selectProduct(name, price) {
+            selectedProductInfo = `${name} (${price})`;
+            document.getElementById('selected-product').value = selectedProductInfo;
+            document.getElementById('cart-count').innerText = `Đã chọn: 1 sản phẩm`;
+            
+            // Hiện form đặt hàng và cuộn xuống
+            const orderSection = document.getElementById('order-section');
+            orderSection.classList.remove('hidden');
+            orderSection.scrollIntoView({ behavior: 'smooth' });
         }
-    </script>
-</body>
-</html>
+
+        function sendOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('
